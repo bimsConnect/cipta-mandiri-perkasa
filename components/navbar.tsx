@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { Menu, X, User } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
@@ -15,24 +15,17 @@ const navItems = [
   { name: "Kontak", href: "/#contact" },
 ]
 
-// This component uses CSR because it needs interactivity and scroll events
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
-      }
+      setIsScrolled(window.scrollY > 50)
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
@@ -51,7 +44,7 @@ export default function Navbar() {
               isScrolled ? "text-primary" : "text-white",
             )}
           >
-            Brick<span className="text-secondary">Property</span>
+            Cipta Mandiri <span className="text-secondary">Perkasa</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -75,38 +68,34 @@ export default function Navbar() {
                 variant="outline"
                 size="sm"
                 className={cn(
-                  "ml-4 transition-colors duration-300",
-                  isScrolled
-                    ? "text-primary border-primary hover:bg-primary/10"
-                    : "text-white border-white hover:bg-white/10",
+                  "ml-4 p-2 rounded-lg transition-colors duration-300",
+                  isScrolled ? "bg-blue-500 text-white" : "bg-white text-black"
                 )}
               >
-                <User className="mr-2 h-4 w-4" />
-                Admin
+                Login
               </Button>
             </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu & Buttons */}
           <div className="flex items-center md:hidden">
+            {/* Admin Login (Mobile) */}
             <Link href="/login" className="mr-4">
               <Button
                 variant="outline"
                 size="sm"
                 className={cn(
-                  "transition-colors duration-300",
-                  isScrolled
-                    ? "text-primary border-primary hover:bg-primary/10"
-                    : "text-white border-white hover:bg-white/10",
+                  "p-2 rounded-lg transition-colors duration-300",
+                  isScrolled ? "bg-blue-500 text-white" : "bg-white text-black"
                 )}
               >
-                <User className="mr-2 h-4 w-4" />
-                Admin
+                Login
               </Button>
             </Link>
 
+            {/* Mobile Menu Toggle */}
             <button
-              className={cn("transition-colors duration-500", isScrolled ? "text-gray-800" : "text-white")}
+              className={cn("z-50 transition-colors duration-500", isScrolled ? "text-gray-800" : "text-white")}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
@@ -118,25 +107,29 @@ export default function Navbar() {
         {/* Mobile Navigation */}
         <div
           className={cn(
-            "md:hidden fixed inset-0 bg-white z-40 transition-transform duration-300 ease-in-out transform",
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full",
+            "md:hidden fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-300 ease-in-out",
+            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
           )}
         >
-          <div className="flex flex-col items-center justify-center h-full space-y-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-xl font-medium text-gray-800 hover:text-secondary transition-colors duration-300"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
+          <button
+            className="absolute top-6 right-6 text-gray-800"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+          >
+            <X size={32} />
+          </button>
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-xl font-medium text-gray-800 hover:text-secondary transition-colors duration-300"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {item.name}
+            </Link>
+          ))}
         </div>
       </div>
     </header>
   )
 }
-

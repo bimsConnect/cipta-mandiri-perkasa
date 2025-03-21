@@ -4,23 +4,23 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ChevronRight } from "lucide-react"
+import { ChevronRight, PhoneCall, Building2, MessageCircle } from "lucide-react" // Tambahkan ikon
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0)
   const slides = [
     {
-      image: "/placeholder.svg?height=1080&width=1920",
+      image: "/background1.webp",
       title: "Temukan Rumah Impian Anda",
       subtitle: "Properti premium dengan lokasi strategis",
     },
     {
-      image: "/placeholder.svg?height=1080&width=1920",
+      image: "/background2.webp",
       title: "Investasi Properti Terbaik",
       subtitle: "Nilai properti yang terus meningkat",
     },
     {
-      image: "/placeholder.svg?height=1080&width=1920",
+      image: "/background3.webp",
       title: "Desain Modern & Elegan",
       subtitle: "Kualitas konstruksi terbaik di kelasnya",
     },
@@ -43,33 +43,32 @@ export default function Hero() {
             currentSlide === index ? "opacity-100" : "opacity-0"
           }`}
         >
-          <Image src={slide.image || "/placeholder.svg"} alt={slide.title} fill priority className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-blue-900/70 to-blue-900/50" />
+          <Image 
+            src={slide.image} 
+            alt={slide.title} 
+            fill 
+            priority
+            quality={100} 
+            className="object-cover w-full h-full" 
+          />
         </div>
       ))}
 
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-yellow-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute bottom-1/4 right-1/3 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
-
       {/* Content */}
-      <div className="relative z-10 flex h-full items-center justify-center text-center">
+      <div className="relative z-10 flex h-full items-center justify-center text-center bg-black/40">
         <div className="container px-4 md:px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mx-auto max-w-3xl space-y-6"
+            className="mx-auto max-w-3xl space-y-6 text-white"
           >
             <motion.h1
               key={slides[currentSlide].title}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-4xl font-bold tracking-tighter text-white sm:text-5xl md:text-6xl"
+              className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl"
             >
               {slides[currentSlide].title}
             </motion.h1>
@@ -78,7 +77,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl text-gray-200"
+              className="text-xl"
             >
               {slides[currentSlide].subtitle}
             </motion.p>
@@ -88,16 +87,39 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center"
             >
-              <Button size="lg" className="bg-primary hover:bg-primary/90 text-white">
-                Lihat Properti
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
+              {/* Tombol Kantor Kami dengan Icon Building2 */}
               <Button
                 size="lg"
-                variant="outline"
-                className="text-white border-secondary hover:bg-secondary/10 hover:text-secondary"
+                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center px-6 py-3 rounded-lg shadow-lg"
               >
+                <Building2 className="mr-2 h-6 w-6" />
+                Kantor Kami
+              </Button>
+
+              {/* Tombol Hubungi Kami dengan Icon WhatsApp */}
+              <Button
+                size="lg"
+                className="bg-green-500 hover:bg-green-600 text-white flex items-center px-6 py-3 rounded-lg shadow-lg"
+                onClick={() => {
+                  const phoneNumber = "6281234567890" // Ganti dengan nomor WhatsApp Anda
+                  const message = encodeURIComponent("Halo, saya ingin order pemesanan ke PT Cipta Mandiri Perkasa.")
+                  window.open(`https://wa.me/${phoneNumber}?text=${message}`, "_blank")
+                }}
+              >
+                <MessageCircle className="mr-2 h-6 w-6" />
                 Hubungi Kami
+              </Button>
+
+              {/* Tombol Call - hanya muncul di tablet & mobile */}
+              <Button
+                size="lg"
+                className="bg-red-500 hover:bg-red-600 text-white flex items-center px-6 py-3 rounded-lg shadow-lg md:hidden"
+                onClick={() => {
+                  window.location.href = "tel:+6281234567890" // Ganti dengan nomor telepon Anda
+                }}
+              >
+                <PhoneCall className="mr-2 h-5 w-5" />
+                Hubungi via Telepon
               </Button>
             </motion.div>
           </motion.div>
@@ -120,4 +142,3 @@ export default function Hero() {
     </section>
   )
 }
-

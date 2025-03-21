@@ -82,11 +82,7 @@ export default function StatsCards() {
         </Card>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
         <Card className={refreshing ? "border-primary/50" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Blog Posts</CardTitle>
@@ -101,11 +97,7 @@ export default function StatsCards() {
         </Card>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
         <Card className={refreshing ? "border-primary/50" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Galeri</CardTitle>
@@ -120,11 +112,7 @@ export default function StatsCards() {
         </Card>
       </motion.div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.3 }}
-      >
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
         <Card className={refreshing ? "border-primary/50" : ""}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Testimonial</CardTitle>
@@ -133,9 +121,7 @@ export default function StatsCards() {
           <CardContent>
             <div className="text-2xl font-bold">{stats.testimonialCount}</div>
             <p className="text-xs text-muted-foreground">
-              {stats.testimonialCount > 0
-                ? `${stats.testimonialCount} testimonial dari pelanggan`
-                : "Belum ada testimonial"}
+              {stats.testimonialCount > 0 ? `${stats.testimonialCount} testimonial dari pelanggan` : "Belum ada testimonial"}
             </p>
           </CardContent>
         </Card>
@@ -143,4 +129,3 @@ export default function StatsCards() {
     </div>
   )
 }
-

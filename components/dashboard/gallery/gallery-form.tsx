@@ -18,12 +18,12 @@ import Link from "next/link"
 import { createGalleryItem, updateGalleryItem } from "@/app/actions/gallery-actions"
 
 const CATEGORIES = [
-  { value: "Apartment", label: "Apartemen" },
-  { value: "House", label: "Rumah" },
-  { value: "Villa", label: "Villa" },
-  { value: "Penthouse", label: "Penthouse" },
-  { value: "Commercial", label: "Komersial" },
-  { value: "Land", label: "Tanah" },
+  { value: "Kubah", label: "Kubah" },
+  { value: "Mimbar", label: "Mimbar" },
+  { value: "Menara", label: "Menara" },
+  { value: "Masjid", label: "Masjid" },
+  { value: "Kerawangan", label: "Kerawangan" },
+  { value: "Awan & Kaligrafi", label: "Awan & Kaligrafi" },
 ]
 
 interface GalleryFormProps {

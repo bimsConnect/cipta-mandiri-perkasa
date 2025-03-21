@@ -32,7 +32,7 @@ export default function About() {
             viewport={{ once: true }}
           >
             <Image
-              src="/placeholder.svg?height=600&width=800"
+              src="/about.webp?height=600&width=800"
               alt="Tentang Brick Property"
               width={600}
               height={400}

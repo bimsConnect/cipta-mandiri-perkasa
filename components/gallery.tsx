@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { db } from "@/lib/neon"
 import { galleryItems } from "@/lib/schema"
 import { eq, desc } from "drizzle-orm"
@@ -111,8 +112,13 @@ export default async function Gallery() {
             </div>
           ))}
         </div>
+
+        <div className="text-center mt-10">
+          <Link href="/gallery" className="inline-block bg-primary text-white py-3 px-6 rounded-lg text-lg font-medium hover:bg-primary-dark transition-all">
+            Lihat Semua Galeri
+          </Link>
+        </div>
       </div>
     </section>
   )
 }
-
