@@ -4,15 +4,17 @@ import * as schema from "./schema"
 import { UAParser } from "ua-parser-js"
 
 // Create a connection pool to Neon
-const pool = new Pool({
+export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 })
+
 
 // Create a drizzle instance
 export const db = drizzle(pool, { schema })
 
+
 // Helper function to get real-time visitor analytics
-export async function getVisitorAnalytics(period: "day" | "week" | "month" = "day") {
+export async function getVisitorAnalytics(period: "day" | "week" | "month" = "day", startDate?: Date, endDate?: Date) {
   try {
     let timeFilter = ""
     let groupBy = ""

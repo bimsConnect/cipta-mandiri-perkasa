@@ -17,6 +17,7 @@ import { logoutAction } from "@/app/actions/auth-actions"
 import { useToast } from "@/components/ui/use-toast"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Input } from "@/components/ui/input"
+import { useMobile } from "@/components/hooks/use-mobile"
 
 export default function DashboardHeader({
   user,
@@ -30,6 +31,7 @@ export default function DashboardHeader({
   const [isDarkMode, setIsDarkMode] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
+  const { isMobile } = useMobile()
 
   const handleLogout = async () => {
     try {
@@ -55,7 +57,7 @@ export default function DashboardHeader({
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white dark:bg-gray-800 px-6 shadow-sm">
+    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-white dark:bg-gray-800 px-4 md:px-6 shadow-sm">
       <div className="flex items-center gap-2 md:w-64">
         <button
           className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 w-10"
@@ -81,7 +83,7 @@ export default function DashboardHeader({
           />
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <Button variant="ghost" size="icon" className="relative" onClick={toggleDarkMode}>
             {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             <span className="sr-only">Toggle Theme</span>

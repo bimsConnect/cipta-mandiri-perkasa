@@ -9,16 +9,16 @@ import {
   FileText,
   ImageIcon,
   MessageSquare,
-  Settings,
-  Users,
   Home,
   BarChart,
   ChevronDown,
   ChevronRight,
+  Settings,
   Database,
 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { useMobile } from "@/components/hooks/use-mobile"
 
 interface SidebarItemProps {
   icon: React.ElementType
@@ -68,13 +68,38 @@ const SidebarGroup = ({ title, children, isCollapsed, defaultOpen = false }: Sid
 }
 
 export default function DashboardSidebar({ isOpen, pathname }: { isOpen: boolean; pathname: string }) {
+  const { isMobile } = useMobile()
   const isCollapsed = !isOpen
+
+  // Handle click outside to close sidebar on mobile
+  useEffect(() => {
+    if (!isMobile) return
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const sidebar = document.getElementById("dashboard-sidebar")
+      if (sidebar && !sidebar.contains(event.target as Node) && isOpen) {
+        // Close sidebar if clicked outside and sidebar is open on mobile
+        const toggleButton = document.querySelector('[aria-label="Toggle Menu"]')
+        if (toggleButton && toggleButton !== event.target) {
+          ;(toggleButton as HTMLElement).click()
+        }
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [isMobile, isOpen])
 
   return (
     <aside
+      id="dashboard-sidebar"
       className={cn(
         "fixed left-0 top-16 bottom-0 z-20 flex flex-col border-r bg-white dark:bg-gray-800 transition-all duration-300",
         isCollapsed ? "w-20" : "w-64",
+        isMobile && !isOpen && "transform -translate-x-full",
+        isMobile && isOpen && "w-64",
       )}
     >
       <div className="flex-1 overflow-y-auto py-4 px-3">
@@ -130,18 +155,10 @@ export default function DashboardSidebar({ isOpen, pathname }: { isOpen: boolean
           </SidebarGroup>
 
           <SidebarGroup
-            title="Management"
+            title="System"
             isCollapsed={isCollapsed}
-            defaultOpen={pathname.includes("/dashboard/users") || pathname.includes("/dashboard/settings")}
+            defaultOpen={pathname.includes("/dashboard/settings") || pathname.includes("/dashboard/backup")}
           >
-            <SidebarItem
-              icon={Users}
-              title="Pengguna"
-              href="/dashboard/users"
-              isActive={pathname.includes("/dashboard/users")}
-              isCollapsed={isCollapsed}
-            />
-
             <SidebarItem
               icon={Settings}
               title="Pengaturan"

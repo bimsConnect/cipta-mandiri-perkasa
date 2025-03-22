@@ -76,3 +76,9 @@ export const dailyStats = pgTable("daily_stats", {
   topReferrer: text("top_referrer"),
 })
 
+// Subscribers table
+export const subscribers = pgTable("subscribers", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  created_at: timestamp("created_at").defaultNow(),
+})

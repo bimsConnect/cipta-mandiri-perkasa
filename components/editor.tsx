@@ -175,7 +175,10 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         </Button>
       </div>
       {editor ? (
-        <EditorContent editor={editor} className="prose prose-sm sm:prose-base max-w-none p-4 min-h-[200px]" />
+        <EditorContent
+        editor={editor}
+        className="prose prose-sm sm:prose-base max-w-none p-4 min-h-[200px] text-justify"
+      />
       ) : (
         <div className="p-4 min-h-[200px]">Loading editor...</div>
       )}

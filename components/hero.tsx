@@ -87,13 +87,16 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4 justify-center"
             >
-              {/* Tombol Kantor Kami dengan Icon Building2 */}
+            {/* Tombol Kantor Kami dengan Icon Building2 */}
               <Button
                 size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center px-6 py-3 rounded-lg shadow-lg"
+                className="bg-blue-600 hover:bg-blue-700 text-white flex items-center px-6 py-3 rounded-lg shadow-lg transition-transform duration-200 active:scale-95"
+                onClick={() => {
+                document.getElementById("kantor-kami")?.scrollIntoView({ behavior: "smooth" });
+              }}
               >
-                <Building2 className="mr-2 h-6 w-6" />
-                Kantor Kami
+             <Building2 className="mr-2 h-6 w-6" />
+               Kantor Kami
               </Button>
 
               {/* Tombol Hubungi Kami dengan Icon WhatsApp */}

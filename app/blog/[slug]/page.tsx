@@ -1,28 +1,26 @@
-import { notFound } from "next/navigation"
-import Image from "next/image"
-import { Calendar, User, ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { db } from "@/lib/neon"
-import { blogPosts, users } from "@/lib/schema"
-import { eq, and } from "drizzle-orm"
-import { formatDate } from "@/lib/utils"
 import type { Metadata } from "next"
-
-export const revalidate = 3600 // Revalidate every hour
+import Image from "next/image"
+import Link from "next/link"
+import { notFound } from "next/navigation"
+import { ArrowLeft } from "lucide-react"
+import { formatDate } from "@/lib/utils"
+import { getPost } from "@/lib/blog"
+import { BlogSidebar } from "@/components/blog/blog-siderbar"
+import { SocialShare } from "@/components/blog/socila-share"
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = await getPost(params.slug)
+  const resolvedParams = await params
+  const post = await getPost(resolvedParams.slug)
 
   if (!post) {
     return {
-      title: "Artikel Tidak Ditemukan",
-      description: "Artikel yang Anda cari tidak ditemukan.",
+      title: "Post Not Found",
     }
   }
 
@@ -33,90 +31,77 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: post.title,
       description: post.excerpt,
       type: "article",
-      publishedTime: post.createdAt?.toISOString(),
-      authors: [post.authorName || "Brick Property"],
+      publishedTime: post.date ? new Date(post.date).toISOString() : undefined,
+      url: `https://yourdomain.com/blog/${resolvedParams.slug}`,
       images: [
         {
-          url: post.imageUrl || "/placeholder.svg",
-          width: 1200,
-          height: 630,
-          alt: post.title,
+          url: post.coverImage || "/placeholder.svg",
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.excerpt,
+      images: post.coverImage ? [post.coverImage] : ["/placeholder.svg"],
     },
   }
 }
 
-async function getPost(slug: string) {
-  try {
-    const posts = await db
-      .select({
-        id: blogPosts.id,
-        title: blogPosts.title,
-        slug: blogPosts.slug,
-        excerpt: blogPosts.excerpt,
-        content: blogPosts.content,
-        imageUrl: blogPosts.imageUrl,
-        createdAt: blogPosts.createdAt,
-        updatedAt: blogPosts.updatedAt,
-        authorName: users.name,
-      })
-      .from(blogPosts)
-      .leftJoin(users, eq(blogPosts.authorId, users.id))
-      .where(and(eq(blogPosts.slug, slug), eq(blogPosts.published, true)))
-      .limit(1)
-
-    return posts.length > 0 ? posts[0] : null
-  } catch (error) {
-    console.error("Error fetching blog post:", error)
-    return null
-  }
-}
-
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getPost(params.slug)
+  const resolvedParams = await params
+  const post = await getPost(resolvedParams.slug)
 
   if (!post) {
     notFound()
   }
 
+  const currentUrl = `/blog/${resolvedParams.slug}`
+
   return (
-    <main className="min-h-screen pt-24 pb-16">
+    <main className="pt-24 pb-16">
       <div className="container px-4 md:px-6 mx-auto">
-        <Link href="/#blog" className="inline-flex items-center text-primary hover:underline mb-8">
+        <Link href="/blog" className="inline-flex items-center text-primary hover:underline mb-8">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Kembali ke Blog
         </Link>
 
-        <article className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4">{post.title}</h1>
-            <div className="flex items-center text-sm text-gray-500 mb-6 space-x-4">
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-1" />
-                <span>{post.createdAt ? formatDate(post.createdAt) : ""}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:col-span-2">
+            <article className="bg-white rounded-lg shadow-md p-6 md:p-8">
+              <div className="space-y-4 mb-6">
+                <h1 className="text-3xl font-extrabold tracking-tight lg:text-4xl">{post.title}</h1>
+                {post.date && <div className="text-sm text-muted-foreground">{formatDate(post.date)}</div>}
               </div>
-              <div className="flex items-center">
-                <User className="h-4 w-4 mr-1" />
-                <span>{post.authorName}</span>
+
+              {post.coverImage && (
+                <div className="my-8 overflow-hidden rounded-md">
+                  <Image
+                    src={post.coverImage || "/placeholder.svg"}
+                    alt={post.title}
+                    width={1200}
+                    height={630}
+                    className="aspect-video w-full object-cover"
+                    priority
+                  />
+                </div>
+              )}
+
+              <div
+                className="prose prose-lg max-w-none dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+
+              <div className="mt-8 pt-6 border-t">
+                <SocialShare url={currentUrl} title={post.title} summary={post.excerpt} />
               </div>
-            </div>
+            </article>
           </div>
 
-          {post.imageUrl && (
-            <div className="relative w-full aspect-video mb-8 rounded-lg overflow-hidden">
-              <Image
-                src={post.imageUrl || "/placeholder.svg"}
-                alt={post.title}
-                fill
-                className="object-cover"
-                priority
-              />
-            </div>
-          )}
-
-          <div className="prose prose-lg max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
-        </article>
+          <div>
+            <BlogSidebar />
+          </div>
+        </div>
       </div>
     </main>
   )

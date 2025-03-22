@@ -87,16 +87,16 @@ export default function DashboardClient() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 w-full overflow-x-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Dashboard</h1>
           <p className="text-muted-foreground mt-1">Selamat datang di dashboard admin Brick Property</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="text-sm text-muted-foreground flex items-center mr-2">
             <Clock className="h-4 w-4 mr-1" />
-            <span>Refresh dalam {countdown}s</span>
+            <span className="whitespace-nowrap">Refresh dalam {countdown}s</span>
           </div>
           <Button
             variant="outline"
@@ -128,7 +128,7 @@ export default function DashboardClient() {
       </Suspense>
 
       <Tabs defaultValue="day" value={activeTab} onValueChange={setActiveTab}>
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-xl font-semibold">Analisis Pengunjung</h2>
           <TabsList className="bg-gray-100 dark:bg-gray-800">
             <TabsTrigger value="day">Hari Ini</TabsTrigger>
@@ -139,7 +139,7 @@ export default function DashboardClient() {
 
         <TabsContent value="day" className="mt-4">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 overflow-x-auto">
               <Suspense
                 fallback={
                   <div className="h-80 flex items-center justify-center">
@@ -147,7 +147,9 @@ export default function DashboardClient() {
                   </div>
                 }
               >
-                <VisitorChartModern period="day" />
+                <div className="min-w-[600px] md:min-w-0">
+                  <VisitorChartModern period="day" />
+                </div>
               </Suspense>
             </CardContent>
           </Card>
@@ -155,7 +157,7 @@ export default function DashboardClient() {
 
         <TabsContent value="week" className="mt-4">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 overflow-x-auto">
               <Suspense
                 fallback={
                   <div className="h-80 flex items-center justify-center">
@@ -163,7 +165,9 @@ export default function DashboardClient() {
                   </div>
                 }
               >
-                <VisitorChartModern period="week" />
+                <div className="min-w-[600px] md:min-w-0">
+                  <VisitorChartModern period="week" />
+                </div>
               </Suspense>
             </CardContent>
           </Card>
@@ -171,7 +175,7 @@ export default function DashboardClient() {
 
         <TabsContent value="month" className="mt-4">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 overflow-x-auto">
               <Suspense
                 fallback={
                   <div className="h-80 flex items-center justify-center">
@@ -179,7 +183,9 @@ export default function DashboardClient() {
                   </div>
                 }
               >
-                <VisitorChartModern period="month" />
+                <div className="min-w-[600px] md:min-w-0">
+                  <VisitorChartModern period="month" />
+                </div>
               </Suspense>
             </CardContent>
           </Card>
@@ -192,7 +198,7 @@ export default function DashboardClient() {
             <CardTitle>Aktivitas Terbaru</CardTitle>
             <CardDescription>Aktivitas terbaru di website Anda</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto">
             <Suspense
               fallback={
                 <div className="flex items-center justify-center h-40">
@@ -200,7 +206,9 @@ export default function DashboardClient() {
                 </div>
               }
             >
-              <RecentActivities />
+              <div className="min-w-[400px] md:min-w-0">
+                <RecentActivities />
+              </div>
             </Suspense>
           </CardContent>
         </Card>
@@ -210,7 +218,7 @@ export default function DashboardClient() {
             <CardTitle>Menunggu Persetujuan</CardTitle>
             <CardDescription>Testimonial yang menunggu persetujuan</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto">
             <Suspense
               fallback={
                 <div className="flex items-center justify-center h-40">
@@ -218,7 +226,9 @@ export default function DashboardClient() {
                 </div>
               }
             >
-              <PendingApprovals />
+              <div className="min-w-[400px] md:min-w-0">
+                <PendingApprovals />
+              </div>
             </Suspense>
           </CardContent>
         </Card>

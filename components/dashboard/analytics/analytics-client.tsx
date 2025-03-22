@@ -93,16 +93,16 @@ export default function AnalyticsClient() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 w-full overflow-x-hidden">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Analytics</h1>
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Analytics</h1>
           <p className="text-muted-foreground mt-1">Analisis pengunjung website Brick Property secara real-time</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <div className="text-sm text-muted-foreground flex items-center mr-2">
             <Clock className="h-4 w-4 mr-1" />
-            <span>Refresh dalam {countdown}s</span>
+            <span className="whitespace-nowrap">Refresh dalam {countdown}s</span>
           </div>
           <Button
             variant="outline"
@@ -125,7 +125,7 @@ export default function AnalyticsClient() {
       <div className="text-xs text-muted-foreground text-right">Terakhir diperbarui: {formatLastRefresh()}</div>
 
       <Tabs defaultValue="day" value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <h2 className="text-xl font-semibold">Analisis Pengunjung</h2>
           <TabsList className="bg-gray-100 dark:bg-gray-800">
             <TabsTrigger value="day">Hari Ini</TabsTrigger>
@@ -136,7 +136,7 @@ export default function AnalyticsClient() {
 
         <TabsContent value="day" className="space-y-6">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 overflow-x-auto">
               <Suspense
                 fallback={
                   <div className="h-80 flex items-center justify-center">
@@ -144,7 +144,9 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <VisitorChartModern period="day" />
+                <div className="min-w-[600px] md:min-w-0">
+                  <VisitorChartModern period="day" />
+                </div>
               </Suspense>
             </CardContent>
           </Card>
@@ -157,7 +159,11 @@ export default function AnalyticsClient() {
                 </div>
               }
             >
-              <PopularPages period="day" />
+              <div className="overflow-x-auto">
+                <div className="min-w-[400px] md:min-w-0">
+                  <PopularPages period="day" />
+                </div>
+              </div>
             </Suspense>
 
             <div className="grid grid-cols-1 gap-6">
@@ -168,7 +174,11 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <BrowserStats period="day" />
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px] md:min-w-0">
+                    <BrowserStats period="day" />
+                  </div>
+                </div>
               </Suspense>
 
               <Suspense
@@ -178,7 +188,11 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <DeviceStats period="day" />
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px] md:min-w-0">
+                    <DeviceStats period="day" />
+                  </div>
+                </div>
               </Suspense>
             </div>
           </div>
@@ -188,21 +202,25 @@ export default function AnalyticsClient() {
               <CardTitle>Data Pengunjung</CardTitle>
               <CardDescription>Detail pengunjung website dalam 24 jam terakhir</CardDescription>
             </CardHeader>
-            <Suspense
-              fallback={
-                <div className="h-80 flex items-center justify-center p-6">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="overflow-x-auto">
+              <Suspense
+                fallback={
+                  <div className="h-80 flex items-center justify-center p-6">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                }
+              >
+                <div className="min-w-[700px] md:min-w-0">
+                  <VisitorTable period="day" />
                 </div>
-              }
-            >
-              <VisitorTable period="day" />
-            </Suspense>
+              </Suspense>
+            </div>
           </Card>
         </TabsContent>
 
         <TabsContent value="week" className="space-y-6">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 overflow-x-auto">
               <Suspense
                 fallback={
                   <div className="h-80 flex items-center justify-center">
@@ -210,7 +228,9 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <VisitorChartModern period="week" />
+                <div className="min-w-[600px] md:min-w-0">
+                  <VisitorChartModern period="week" />
+                </div>
               </Suspense>
             </CardContent>
           </Card>
@@ -223,7 +243,11 @@ export default function AnalyticsClient() {
                 </div>
               }
             >
-              <PopularPages period="week" />
+              <div className="overflow-x-auto">
+                <div className="min-w-[400px] md:min-w-0">
+                  <PopularPages period="week" />
+                </div>
+              </div>
             </Suspense>
 
             <div className="grid grid-cols-1 gap-6">
@@ -234,7 +258,11 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <BrowserStats period="week" />
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px] md:min-w-0">
+                    <BrowserStats period="week" />
+                  </div>
+                </div>
               </Suspense>
 
               <Suspense
@@ -244,7 +272,11 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <DeviceStats period="week" />
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px] md:min-w-0">
+                    <DeviceStats period="week" />
+                  </div>
+                </div>
               </Suspense>
             </div>
           </div>
@@ -254,21 +286,25 @@ export default function AnalyticsClient() {
               <CardTitle>Data Pengunjung</CardTitle>
               <CardDescription>Detail pengunjung website dalam 7 hari terakhir</CardDescription>
             </CardHeader>
-            <Suspense
-              fallback={
-                <div className="h-80 flex items-center justify-center p-6">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="overflow-x-auto">
+              <Suspense
+                fallback={
+                  <div className="h-80 flex items-center justify-center p-6">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                }
+              >
+                <div className="min-w-[700px] md:min-w-0">
+                  <VisitorTable period="week" />
                 </div>
-              }
-            >
-              <VisitorTable period="week" />
-            </Suspense>
+              </Suspense>
+            </div>
           </Card>
         </TabsContent>
 
         <TabsContent value="month" className="space-y-6">
           <Card>
-            <CardContent className="pt-6">
+            <CardContent className="pt-6 overflow-x-auto">
               <Suspense
                 fallback={
                   <div className="h-80 flex items-center justify-center">
@@ -276,7 +312,9 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <VisitorChartModern period="month" />
+                <div className="min-w-[600px] md:min-w-0">
+                  <VisitorChartModern period="month" />
+                </div>
               </Suspense>
             </CardContent>
           </Card>
@@ -289,7 +327,11 @@ export default function AnalyticsClient() {
                 </div>
               }
             >
-              <PopularPages period="month" />
+              <div className="overflow-x-auto">
+                <div className="min-w-[400px] md:min-w-0">
+                  <PopularPages period="month" />
+                </div>
+              </div>
             </Suspense>
 
             <div className="grid grid-cols-1 gap-6">
@@ -300,7 +342,11 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <BrowserStats period="month" />
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px] md:min-w-0">
+                    <BrowserStats period="month" />
+                  </div>
+                </div>
               </Suspense>
 
               <Suspense
@@ -310,7 +356,11 @@ export default function AnalyticsClient() {
                   </div>
                 }
               >
-                <DeviceStats period="month" />
+                <div className="overflow-x-auto">
+                  <div className="min-w-[400px] md:min-w-0">
+                    <DeviceStats period="month" />
+                  </div>
+                </div>
               </Suspense>
             </div>
           </div>
@@ -320,15 +370,19 @@ export default function AnalyticsClient() {
               <CardTitle>Data Pengunjung</CardTitle>
               <CardDescription>Detail pengunjung website dalam 30 hari terakhir</CardDescription>
             </CardHeader>
-            <Suspense
-              fallback={
-                <div className="h-80 flex items-center justify-center p-6">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+            <div className="overflow-x-auto">
+              <Suspense
+                fallback={
+                  <div className="h-80 flex items-center justify-center p-6">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                }
+              >
+                <div className="min-w-[700px] md:min-w-0">
+                  <VisitorTable period="month" />
                 </div>
-              }
-            >
-              <VisitorTable period="month" />
-            </Suspense>
+              </Suspense>
+            </div>
           </Card>
         </TabsContent>
       </Tabs>

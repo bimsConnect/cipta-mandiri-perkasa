@@ -1,0 +1,9 @@
+{
+    "schema": "./lib/schema.ts",
+    "out": "./drizzle",
+    "connection": {
+      "connectionString": "${DATABASE_URL}"
+    },
+    "dialect": "postgresql"
+  }
+  

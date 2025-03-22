@@ -1,15 +1,20 @@
 import { db } from "@/lib/neon";
 import { testimonials } from "@/lib/schema";
-import { eq } from "drizzle-orm";
-import TestimonialForm from "./testimonials-form";
+import { eq, desc } from "drizzle-orm";
 import TestimonialsCarousel from "./testimonial-carousel";
+import TestimonialForm from "./testimonials-form";
 
 // This component uses ISR to periodically update testimonials
 export const revalidate = 3600; // Revalidate every hour
 
 async function getTestimonials() {
   try {
-    const items = await db.select().from(testimonials).where(eq(testimonials.approved, true)).limit(6); // Ambil 6 data untuk carousel
+    const items = await db
+      .select()
+      .from(testimonials)
+      .where(eq(testimonials.approved, true))
+      .orderBy(desc(testimonials.createdAt));
+
     return items;
   } catch (error) {
     console.error("Error fetching testimonials:", error);
@@ -27,45 +32,57 @@ export default async function TestimonialsSection() {
       : [
           {
             id: 1,
-            name: "Ilya Grigorik",
-            role: "Principal Engineer at Shopify",
+            name: "Budi Santoso",
+            role: "Pengusaha",
+            imageUrl: "/placeholder.svg?height=200&width=200",
             content:
-              "Wappaluzer has proven to be a great tool to help us break down the aggregate analysis of how the web is doing by various technologies.",
+              "Saya sangat puas dengan layanan Brick Property. Tim mereka sangat profesional dan membantu saya menemukan properti investasi yang tepat. Proses pembelian juga sangat mudah dan transparan.",
+            rating: 5,
           },
           {
             id: 2,
-            name: "Roman Schweiger",
-            role: "Head of Business Development at Boomerank",
+            name: "Siti Nurhaliza",
+            role: "Dokter",
+            imageUrl: "/placeholder.svg?height=200&width=200",
             content:
-              "Wappaluzer is an integral part of our sales process, enabling us to optimise lead segmentation at scale. It’s a total game changer for our organisation.",
+              "Brick Property membantu saya menemukan rumah impian untuk keluarga. Konsultannya sangat memahami kebutuhan kami dan memberikan rekomendasi yang tepat. Sangat merekomendasikan!",
+            rating: 5,
           },
           {
             id: 3,
-            name: "Thomas Alibert",
-            role: "Growth Engineer at PayFit",
+            name: "Ahmad Fauzi",
+            role: "Dosen",
+            imageUrl: "/placeholder.svg?height=200&width=200",
             content:
-              "These days you need advanced marketing tools to stand out from the competition. Wappaluzer help us do just that.",
+              "Pengalaman membeli properti pertama saya bersama Brick Property sangat menyenangkan. Mereka memandu saya di setiap langkah proses dan memastikan semua berjalan lancar.",
+            rating: 4,
           },
           {
             id: 4,
-            name: "Rick Viscomi",
-            role: "Senior DevRel Engineer at Google",
+            name: "Dewi Lestari",
+            role: "Wiraswasta",
+            imageUrl: "/placeholder.svg?height=200&width=200",
             content:
-              "Wappaluzer has been such a useful part of the HTTP Archive dataset. It’s enabled us to slice the data in new ways and discover more interesting insights about the state of the web.",
+              "Pelayanan yang luar biasa dari tim Brick Property. Mereka sangat responsif dan memahami kebutuhan saya. Properti yang saya beli sesuai dengan ekspektasi dan nilai investasinya terus meningkat.",
+            rating: 5,
           },
           {
             id: 5,
-            name: "Michael Petselas",
-            role: "Customer Growth Specialist at HubSpot",
+            name: "Rudi Hartono",
+            role: "Karyawan Swasta",
+            imageUrl: "/placeholder.svg?height=200&width=200",
             content:
-              "I use Wappaluzer all the time and it’s been invaluable in being relevant in my outreach.",
+              "Brick Property memberikan solusi terbaik untuk kebutuhan properti saya. Tim mereka profesional dan selalu siap membantu. Saya sangat puas dengan layanan mereka.",
+            rating: 4,
           },
           {
             id: 6,
-            name: "Rabin Nuchtabek",
-            role: "Chief Growth Engineer at Skedify",
+            name: "Anita Wijaya",
+            role: "Pengusaha",
+            imageUrl: "/placeholder.svg?height=200&width=200",
             content:
-              "Wappaluzer is helping our sales teams to understand prospects better and faster by having a clear view on their tech stack.",
+              "Saya telah bekerja sama dengan beberapa agen properti, tetapi Brick Property adalah yang terbaik. Mereka memahami pasar dengan baik dan memberikan saran yang tepat untuk investasi properti saya.",
+            rating: 5,
           },
         ];
 
@@ -82,11 +99,13 @@ export default async function TestimonialsSection() {
           </p>
         </div>
 
-        {/* Integrate TestimonialsCarousel here */}
-        <TestimonialsCarousel items={items} />
+        {/* Testimonial Carousel */}
+        <TestimonialsCarousel testimonials={items} />
 
         {/* Client-side testimonial form */}
-        <TestimonialForm />
+        <div className="mt-16">
+          <TestimonialForm />
+        </div>
       </div>
     </section>
   );

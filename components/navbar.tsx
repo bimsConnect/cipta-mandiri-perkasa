@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
-import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Menu, X, User } from "lucide-react"
 
 const navItems = [
   { name: "Beranda", href: "/#home" },
@@ -25,13 +24,28 @@ export default function Navbar() {
     }
 
     window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+    }
   }, [])
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const handleClickOutside = (e: MouseEvent) => {
+        const target = e.target as HTMLElement
+        if (!target.closest(".mobile-menu") && !target.closest(".menu-button")) {
+          setMobileMenuOpen(false)
+        }
+      }
+      document.addEventListener("click", handleClickOutside)
+      return () => document.removeEventListener("click", handleClickOutside)
+    }
+  }, [mobileMenuOpen])
 
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 w-full",
         isScrolled ? "bg-white shadow-md py-2" : "bg-transparent py-6",
       )}
     >
@@ -44,10 +58,9 @@ export default function Navbar() {
               isScrolled ? "text-primary" : "text-white",
             )}
           >
-            Cipta Mandiri <span className="text-secondary">Perkasa</span>
+            Brick<span className="text-secondary">Property</span>
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -62,62 +75,47 @@ export default function Navbar() {
               </Link>
             ))}
 
-            {/* Admin Login Button */}
-            <Link href="/login">
-              <Button
-                variant="outline"
-                size="sm"
+            <Link href="/login" className="hidden md:flex items-center">
+              <User
                 className={cn(
-                  "ml-4 p-2 rounded-lg transition-colors duration-300",
-                  isScrolled ? "bg-blue-500 text-white" : "bg-white text-black"
+                  "h-6 w-6 transition-colors duration-300",
+                  isScrolled ? "text-blue-600" : "text-white",
                 )}
-              >
-                Login
-              </Button>
+              />
             </Link>
           </nav>
 
-          {/* Mobile Menu & Buttons */}
           <div className="flex items-center md:hidden">
-            {/* Admin Login (Mobile) */}
-            <Link href="/login" className="mr-4">
-              <Button
-                variant="outline"
-                size="sm"
-                className={cn(
-                  "p-2 rounded-lg transition-colors duration-300",
-                  isScrolled ? "bg-blue-500 text-white" : "bg-white text-black"
-                )}
-              >
-                Login
-              </Button>
-            </Link>
-
-            {/* Mobile Menu Toggle */}
             <button
-              className={cn("z-50 transition-colors duration-500", isScrolled ? "text-gray-800" : "text-white")}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className={cn("transition-colors duration-500 menu-button", isScrolled ? "text-gray-800" : "text-white")}
+              onClick={(e) => {
+                e.stopPropagation()
+                setMobileMenuOpen(!mobileMenuOpen)
+              }}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "md:hidden fixed inset-0 bg-white z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-300 ease-in-out",
-            mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <button
-            className="absolute top-6 right-6 text-gray-800"
-            onClick={() => setMobileMenuOpen(false)}
-            aria-label="Close menu"
-          >
-            <X size={32} />
-          </button>
+      {/* Overlay Background */}
+      {mobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-30" 
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Drawer Menu */}
+      <div
+        className={cn(
+          "md:hidden fixed top-0 right-0 bottom-0 w-2/3 bg-white z-40 transition-transform duration-300 ease-in-out transform mobile-menu rounded-l-lg shadow-lg",
+          mobileMenuOpen ? "translate-x-0" : "translate-x-full",
+        )}
+      >
+        <div className="flex flex-col items-center justify-center h-full space-y-8">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -128,6 +126,11 @@ export default function Navbar() {
               {item.name}
             </Link>
           ))}
+
+          <Link href="/login" className="flex items-center space-x-2">
+            <User className="h-6 w-6 text-gray-800" />
+            <span className="text-gray-800">Login</span>
+          </Link>
         </div>
       </div>
     </header>

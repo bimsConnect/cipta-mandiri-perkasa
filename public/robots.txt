@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: http://ciptamandiriperkasa.vercel.app
+
+# Sitemaps
+Sitemap: http://ciptamandiriperkasa.vercel.app/sitemap.xml

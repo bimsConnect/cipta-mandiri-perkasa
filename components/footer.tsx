@@ -34,41 +34,6 @@ export default function Footer() {
             </div>
           </div>
 
-          <div>
-            <h3 className="text-lg font-bold mb-4">Tautan Cepat</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="#home" className="text-gray-400 hover:text-secondary transition-colors">
-                  Beranda
-                </Link>
-              </li>
-              <li>
-                <Link href="#about" className="text-gray-400 hover:text-secondary transition-colors">
-                  Tentang Kami
-                </Link>
-              </li>
-              <li>
-                <Link href="#gallery" className="text-gray-400 hover:text-secondary transition-colors">
-                  Galeri
-                </Link>
-              </li>
-              <li>
-                <Link href="#blog" className="text-gray-400 hover:text-secondary transition-colors">
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link href="#testimonials" className="text-gray-400 hover:text-secondary transition-colors">
-                  Testimonial
-                </Link>
-              </li>
-              <li>
-                <Link href="#contact" className="text-gray-400 hover:text-secondary transition-colors">
-                  Kontak
-                </Link>
-              </li>
-            </ul>
-          </div>
 
           <div>
             <h3 className="text-lg font-bold mb-4">Layanan Kami</h3>
