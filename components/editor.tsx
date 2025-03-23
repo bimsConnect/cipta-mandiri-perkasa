@@ -58,7 +58,8 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
     return <div className="border rounded-md p-4 min-h-[200px]">Loading editor...</div>
   }
 
-  const addImage = () => {
+  const addImage = (event: React.MouseEvent) => {
+    event.preventDefault()
     const url = window.prompt("URL gambar")
 
     if (url && editor) {
@@ -66,7 +67,8 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
     }
   }
 
-  const setLink = () => {
+  const setLink = (event: React.MouseEvent) => {
+    event.preventDefault()
     const previousUrl = editor?.getAttributes("link").href
     const url = window.prompt("URL", previousUrl)
 
@@ -85,13 +87,18 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
     editor?.chain().focus().extendMarkRange("link").setLink({ href: url }).run()
   }
 
+  const handleButtonClick = (event: React.MouseEvent, action: (event: React.MouseEvent) => void) => {
+    event.preventDefault()
+    action(event)
+  }
+
   return (
     <div className="border rounded-md overflow-hidden">
       <div className="bg-muted p-2 flex flex-wrap gap-1 border-b">
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleBold().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleBold().run())}
           disabled={!editor?.can().chain().focus().toggleBold().run()}
           className={editor?.isActive("bold") ? "bg-muted-foreground/20" : ""}
         >
@@ -100,7 +107,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleItalic().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleItalic().run())}
           disabled={!editor?.can().chain().focus().toggleItalic().run()}
           className={editor?.isActive("italic") ? "bg-muted-foreground/20" : ""}
         >
@@ -109,7 +116,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleHeading({ level: 1 }).run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleHeading({ level: 1 }).run())}
           className={editor?.isActive("heading", { level: 1 }) ? "bg-muted-foreground/20" : ""}
         >
           <Heading1 className="h-4 w-4" />
@@ -117,7 +124,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleHeading({ level: 2 }).run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleHeading({ level: 2 }).run())}
           className={editor?.isActive("heading", { level: 2 }) ? "bg-muted-foreground/20" : ""}
         >
           <Heading2 className="h-4 w-4" />
@@ -125,7 +132,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleBulletList().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleBulletList().run())}
           className={editor?.isActive("bulletList") ? "bg-muted-foreground/20" : ""}
         >
           <List className="h-4 w-4" />
@@ -133,7 +140,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleOrderedList().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleOrderedList().run())}
           className={editor?.isActive("orderedList") ? "bg-muted-foreground/20" : ""}
         >
           <ListOrdered className="h-4 w-4" />
@@ -141,7 +148,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().toggleBlockquote().run())}
           className={editor?.isActive("blockquote") ? "bg-muted-foreground/20" : ""}
         >
           <Quote className="h-4 w-4" />
@@ -149,18 +156,18 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={setLink}
+          onClick={(e) => handleButtonClick(e, setLink)}
           className={editor?.isActive("link") ? "bg-muted-foreground/20" : ""}
         >
           <LinkIcon className="h-4 w-4" />
         </Button>
-        <Button variant="ghost" size="sm" onClick={addImage}>
+        <Button variant="ghost" size="sm" onClick={(e) => handleButtonClick(e, addImage)}>
           <ImageIcon className="h-4 w-4" />
         </Button>
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().undo().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().undo().run())}
           disabled={!editor?.can().chain().focus().undo().run()}
         >
           <Undo className="h-4 w-4" />
@@ -168,7 +175,7 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => editor?.chain().focus().redo().run()}
+          onClick={(e) => handleButtonClick(e, () => editor?.chain().focus().redo().run())}
           disabled={!editor?.can().chain().focus().redo().run()}
         >
           <Redo className="h-4 w-4" />
@@ -176,13 +183,12 @@ export default function Editor({ value, onChange, placeholder = "Mulai menulis..
       </div>
       {editor ? (
         <EditorContent
-        editor={editor}
-        className="prose prose-sm sm:prose-base max-w-none p-4 min-h-[200px] text-justify"
-      />
+          editor={editor}
+          className="prose prose-sm sm:prose-base max-w-none p-4 min-h-[200px] text-justify"
+        />
       ) : (
         <div className="p-4 min-h-[200px]">Loading editor...</div>
       )}
     </div>
   )
 }
-

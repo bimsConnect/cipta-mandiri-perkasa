@@ -33,7 +33,7 @@ export default function About() {
           >
             <Image
               src="/about.webp?height=600&width=800"
-              alt="Tentang Brick Property"
+              alt="Tentang Cipta Mandiri Perkasa"
               width={600}
               height={400}
               className="rounded-lg shadow-xl"
@@ -49,7 +49,7 @@ export default function About() {
           >
             <h3 className="text-2xl font-bold">Kami Membantu Anda Menemukan Properti Impian</h3>
             <p className="text-gray-600">
-              Brick Property adalah perusahaan properti terkemuka yang berfokus pada pengembangan properti premium
+              Cipta Mandiri Perkasa adalah perusahaan properti terkemuka yang berfokus pada pengembangan properti premium
               dengan kualitas terbaik. Dengan pengalaman lebih dari 10 tahun di industri properti, kami telah membantu
               ribuan keluarga menemukan rumah impian mereka.
             </p>

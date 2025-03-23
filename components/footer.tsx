@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react"
+import Link from "next/link";
+import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -8,10 +8,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="text-2xl font-bold mb-4 inline-block">
-              Brick<span className="text-secondary">Property</span>
+              Cipta Mandiri <span className="text-secondary">Perkasa</span>
             </Link>
             <p className="text-gray-400 mb-4">
-              Brick Property adalah perusahaan properti terkemuka yang berfokus pada pengembangan properti premium
+              Cipta Mandiri Perkasa adalah perusahaan properti terkemuka yang berfokus pada pengembangan properti premium
               dengan kualitas terbaik.
             </p>
             <div className="flex space-x-4">
@@ -33,7 +33,6 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-
 
           <div>
             <h3 className="text-lg font-bold mb-4">Layanan Kami</h3>
@@ -81,15 +80,35 @@ export default function Footer() {
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-primary mr-3" />
-                <span className="text-gray-400">info@brickproperty.com</span>
+                <span className="text-gray-400">info@ciptamandiriperkasa.com</span>
               </li>
             </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-bold mb-4">Newsletter</h3>
+            <p className="text-gray-400 mb-4">
+              Daftar untuk mendapatkan informasi terbaru tentang properti dan penawaran menarik.
+            </p>
+            <form className="flex flex-col space-y-4">
+              <input
+                type="email"
+                placeholder="Masukkan email Anda"
+                className="px-4 py-2 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-secondary"
+              />
+              <button
+                type="submit"
+                className="px-4 py-2 bg-secondary text-white rounded-lg hover:bg-primary transition-colors"
+              >
+                Daftar
+              </button>
+            </form>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-400 text-sm">
-            &copy; {new Date().getFullYear()} Brick Property. All rights reserved.
+            &copy; {new Date().getFullYear()} Cipta Mandiri Perkasa. All rights reserved.
           </p>
           <div className="flex space-x-4 mt-4 md:mt-0">
             <Link href="#" className="text-gray-400 hover:text-primary text-sm transition-colors">
@@ -102,6 +121,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
-

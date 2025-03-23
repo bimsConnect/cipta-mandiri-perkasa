@@ -95,7 +95,7 @@ export default async function TestimonialsSection() {
           </h2>
           <div className="mt-4 h-1 w-20 bg-primary mx-auto"></div>
           <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
-            Dengarkan pengalaman klien kami yang telah menemukan properti impian mereka bersama Brick Property
+            Dengarkan pengalaman klien kami yang telah menemukan properti impian mereka bersama Cipta Mandiri Perkasa
           </p>
         </div>
 

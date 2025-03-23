@@ -58,7 +58,7 @@ export default function Navbar() {
               isScrolled ? "text-primary" : "text-white",
             )}
           >
-            Brick<span className="text-secondary">Property</span>
+            Cipta Mandiri <span className="text-secondary">Perkasa</span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">

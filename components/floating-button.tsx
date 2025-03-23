@@ -42,7 +42,7 @@ export default function FloatingButtons() {
 
   return (
     <div
-      className={`fixed bottom-0 right-0 flex flex-col gap-3 transition-opacity duration-500 ease-in-out ${
+      className={`fixed bottom-2 right-3 flex flex-col gap-3 transition-opacity duration-500 ease-in-out ${
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >
