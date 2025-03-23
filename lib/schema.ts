@@ -1,4 +1,4 @@
-import { pgTable, serial, text, timestamp, boolean, integer, numeric } from "drizzle-orm/pg-core"
+import { pgTable, serial, text, timestamp, boolean, integer, numeric, jsonb, varchar } from "drizzle-orm/pg-core"
 
 // Users table
 export const users = pgTable("users", {
@@ -82,3 +82,16 @@ export const subscribers = pgTable("subscribers", {
   email: text("email").notNull().unique(),
   created_at: timestamp("created_at").defaultNow(),
 })
+
+export const siteSettings = pgTable("site_settings", {
+  id: serial("id").primaryKey(),
+  site_name: varchar("site_name", { length: 255 }).notNull(),
+  site_description: text("site_description"),
+  contact_email: varchar("contact_email", { length: 255 }),
+  contact_phone: varchar("contact_phone", { length: 255 }),
+  address: text("address"),
+  social_media: jsonb("social_media").default({}),
+  meta_keywords: text("meta_keywords").array().default([]),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});

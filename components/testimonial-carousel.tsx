@@ -33,7 +33,6 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
     setCurrentIndex((prevIndex) => (prevIndex - 1 + testimonials.length) % testimonials.length);
   }, [testimonials.length]);
 
-  // Auto-advance slides
   useEffect(() => {
     if (!isPaused) {
       const interval = setInterval(() => {
@@ -84,8 +83,8 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
                   key={testimonial.id}
                   className="bg-white rounded-xl shadow-lg p-8 text-center border-t-4 border-primary"
                 >
-                  <div className="flex justify-center mb-6">
-                    <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-secondary">
+                  <div className="flex justify-center mb-4">
+                    <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-secondary">
                       <Image
                         src={testimonial.imageUrl || "/placeholder.svg"}
                         alt={testimonial.name}
@@ -94,7 +93,12 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
                       />
                     </div>
                   </div>
-                  <div className="flex justify-center mb-4">
+                  <h4 className="font-bold text-lg text-primary">{testimonial.name}</h4>
+                  <p className="text-gray-500 mb-4">{testimonial.role}</p>
+                  <p className="text-gray-600 mb-6 italic text-justify break-words">
+                    "{testimonial.content}"
+                  </p>
+                  <div className="flex justify-center mt-4">
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
@@ -113,48 +117,11 @@ export default function TestimonialsCarousel({ testimonials }: TestimonialsCarou
                       </svg>
                     ))}
                   </div>
-                  <p className="text-gray-600 mb-6 italic text-justify break-words">
-                    "{testimonial.content}"
-                  </p>
-                  <h4 className="font-bold text-lg text-primary">{testimonial.name}</h4>
-                  <p className="text-gray-500">{testimonial.role}</p>
                 </div>
               );
             })}
           </motion.div>
         </AnimatePresence>
-
-        <div className="flex justify-center mt-8 space-x-2">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setDirection(index > currentIndex ? 1 : -1);
-                setCurrentIndex(index);
-              }}
-              className={`w-3 h-3 rounded-full transition-colors ${
-                index === currentIndex ? "bg-primary" : "bg-gray-300"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
-          ))}
-        </div>
-
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors z-10"
-          aria-label="Previous testimonial"
-        >
-          <ChevronLeft className="h-6 w-6" />
-        </button>
-
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md hover:bg-gray-100 transition-colors z-10"
-          aria-label="Next testimonial"
-        >
-          <ChevronRight className="h-6 w-6" />
-        </button>
       </div>
     </div>
   );

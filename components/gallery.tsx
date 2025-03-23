@@ -1,11 +1,11 @@
-import Image from "next/image"
-import Link from "next/link"
-import { db } from "@/lib/neon"
-import { galleryItems } from "@/lib/schema"
-import { eq, desc } from "drizzle-orm"
+import Image from "next/image";
+import Link from "next/link";
+import { db } from "@/lib/neon";
+import { galleryItems } from "@/lib/schema";
+import { eq, desc } from "drizzle-orm";
 
 // This component uses ISR to periodically update the gallery
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 3600; // Revalidate every hour
 
 async function getGalleryItems() {
   try {
@@ -14,66 +14,30 @@ async function getGalleryItems() {
       .from(galleryItems)
       .where(eq(galleryItems.published, true))
       .orderBy(desc(galleryItems.createdAt))
-      .limit(6)
+      .limit(6);
 
-    return items
+    return items;
   } catch (error) {
-    console.error("Error fetching gallery items:", error)
-    return []
+    console.error("Error fetching gallery items:", error);
+    return [];
   }
 }
 
 export default async function Gallery() {
-  const galleryData = await getGalleryItems()
+  const galleryData = await getGalleryItems();
 
   // Fallback data if database fetch fails
   const items =
     galleryData.length > 0
       ? galleryData
       : [
-          {
-            id: 1,
-            title: "Modern Apartment",
-            description: "Luxury apartment in downtown",
-            category: "Apartment",
-            imageUrl: "/placeholder.svg?height=600&width=800",
-          },
-          {
-            id: 2,
-            title: "Luxury Villa",
-            description: "Spacious villa with pool",
-            category: "Villa",
-            imageUrl: "/placeholder.svg?height=600&width=800",
-          },
-          {
-            id: 3,
-            title: "Penthouse",
-            description: "Exclusive penthouse with city view",
-            category: "Penthouse",
-            imageUrl: "/placeholder.svg?height=600&width=800",
-          },
-          {
-            id: 4,
-            title: "Office Space",
-            description: "Modern office in business district",
-            category: "Commercial",
-            imageUrl: "/placeholder.svg?height=600&width=800",
-          },
-          {
-            id: 5,
-            title: "Modern House",
-            description: "Contemporary house design",
-            category: "House",
-            imageUrl: "/placeholder.svg?height=600&width=800",
-          },
-          {
-            id: 6,
-            title: "Luxury Apartment",
-            description: "High-end apartment with amenities",
-            category: "Apartment",
-            imageUrl: "/placeholder.svg?height=600&width=800",
-          },
-        ]
+          { id: 1, title: "Modern Apartment", description: "Luxury apartment in downtown", category: "Apartment", imageUrl: "/placeholder.svg" },
+          { id: 2, title: "Luxury Villa", description: "Spacious villa with pool", category: "Villa", imageUrl: "/placeholder.svg" },
+          { id: 3, title: "Penthouse", description: "Exclusive penthouse with city view", category: "Penthouse", imageUrl: "/placeholder.svg" },
+          { id: 4, title: "Office Space", description: "Modern office in business district", category: "Commercial", imageUrl: "/placeholder.svg" },
+          { id: 5, title: "Modern House", description: "Contemporary house design", category: "House", imageUrl: "/placeholder.svg" },
+          { id: 6, title: "Luxury Apartment", description: "High-end apartment with amenities", category: "Apartment", imageUrl: "/placeholder.svg" },
+        ];
 
   return (
     <section id="gallery" className="py-20">
@@ -90,26 +54,28 @@ export default async function Gallery() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {items.map((item) => (
-            <div key={item.id} className="group relative overflow-hidden rounded-lg cursor-pointer">
-              <div className="aspect-square relative">
-                <Image
-                  src={item.imageUrl || "/placeholder.svg"}
-                  alt={item.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="bg-white/90 px-4 py-2 rounded-lg">
-                    <p className="font-medium text-gray-900">{item.title}</p>
-                    <p className="text-sm text-gray-600">{item.category}</p>
+            <Link key={item.id} href={`/gallery/${item.id}`} passHref>
+              <div className="group relative overflow-hidden rounded-lg cursor-pointer">
+                <div className="aspect-square relative">
+                  <Image
+                    src={item.imageUrl || "/placeholder.svg"}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-white/90 px-4 py-2 rounded-lg">
+                      <p className="font-medium text-gray-900">{item.title}</p>
+                      <p className="text-sm text-gray-600">{item.category}</p>
+                    </div>
+                  </div>
+                  <div className="absolute top-4 right-4 bg-secondary text-gray-900 text-xs font-medium px-2 py-1 rounded">
+                    {item.category}
                   </div>
                 </div>
-                <div className="absolute top-4 right-4 bg-secondary text-gray-900 text-xs font-medium px-2 py-1 rounded">
-                  {item.category}
-                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -120,5 +86,5 @@ export default async function Gallery() {
         </div>
       </div>
     </section>
-  )
+  );
 }

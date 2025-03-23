@@ -1,17 +1,18 @@
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { db } from "@/lib/neon"
-import { galleryItems } from "@/lib/schema"
-import { desc, eq } from "drizzle-orm"
-import type { Metadata } from "next"
+// app/gallery/page.tsx
+import Image from "next/image";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { db } from "@/lib/neon";
+import { galleryItems } from "@/lib/schema";
+import { desc, eq } from "drizzle-orm";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Galeri Properti | Brick Property",
   description: "Jelajahi koleksi properti premium kami dengan desain modern dan fasilitas terbaik",
-}
+};
 
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 3600; // Revalidate every hour
 
 async function getAllGalleryItems() {
   try {
@@ -19,17 +20,17 @@ async function getAllGalleryItems() {
       .select()
       .from(galleryItems)
       .where(eq(galleryItems.published, true))
-      .orderBy(desc(galleryItems.createdAt))
+      .orderBy(desc(galleryItems.createdAt));
 
-    return items
+    return items;
   } catch (error) {
-    console.error("Error fetching gallery items:", error)
-    return []
+    console.error("Error fetching gallery items:", error);
+    return [];
   }
 }
 
 export default async function GalleryPage() {
-  const items = await getAllGalleryItems()
+  const items = await getAllGalleryItems();
 
   return (
     <main className="min-h-screen pt-24 pb-16">
@@ -56,31 +57,32 @@ export default async function GalleryPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {items.map((item) => (
-              <div key={item.id} className="group relative overflow-hidden rounded-lg cursor-pointer">
-                <div className="aspect-square relative">
-                  <Image
-                    src={item.imageUrl || "/placeholder.svg"}
-                    alt={item.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="bg-white/90 px-4 py-2 rounded-lg">
-                      <p className="font-medium text-gray-900">{item.title}</p>
-                      <p className="text-sm text-gray-600">{item.description}</p>
+              <Link key={item.id} href={`/gallery/${item.id}`}>
+                <div className="group relative overflow-hidden rounded-lg cursor-pointer">
+                  <div className="aspect-square relative">
+                    <Image
+                      src={item.imageUrl || "/placeholder.svg"}
+                      alt={item.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="bg-white/90 px-4 py-2 rounded-lg">
+                        <p className="font-medium text-gray-900">{item.title}</p>
+                        <p className="text-sm text-gray-600">{item.description}</p>
+                      </div>
+                    </div>
+                    <div className="absolute top-4 right-4 bg-secondary text-gray-900 text-xs font-medium px-2 py-1 rounded">
+                      {item.category}
                     </div>
                   </div>
-                  <div className="absolute top-4 right-4 bg-secondary text-gray-900 text-xs font-medium px-2 py-1 rounded">
-                    {item.category}
-                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}
       </div>
     </main>
-  )
+  );
 }
-

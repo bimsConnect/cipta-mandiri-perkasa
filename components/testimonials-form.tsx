@@ -1,67 +1,69 @@
-"use client";
+"use client"
 
-import type React from "react";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Plus, X, Upload, Send, Star } from "lucide-react";
-import Image from "next/image";
-import { submitTestimonial } from "@/app/actions/testimonial-actions";
-import { useToast } from "@/components/ui/use-toast";
+import type React from "react"
 
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+import { Plus, X, Upload, Send, Star } from "lucide-react"
+import Image from "next/image"
+import { submitTestimonialAction } from "@/app/actions/testimonial-client-actions"
+import { useToast } from "@/components/ui/use-toast"
+
+// This component uses CSR because it's interactive and handles file uploads
 export default function TestimonialForm() {
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [rating, setRating] = useState(5);
-  const [hoveredRating, setHoveredRating] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const { toast } = useToast();
+  const [isFormOpen, setIsFormOpen] = useState(false)
+  const [rating, setRating] = useState(5)
+  const [hoveredRating, setHoveredRating] = useState(0)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const { toast } = useToast()
 
   const [formData, setFormData] = useState({
     name: "",
     role: "",
     content: "",
     image: null as File | null,
-  });
+  })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setFormData((prev) => ({ ...prev, image: file }));
-      setImagePreview(URL.createObjectURL(file));
+      const file = e.target.files[0]
+      setFormData((prev) => ({ ...prev, image: file }))
+      setImagePreview(URL.createObjectURL(file))
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
+    e.preventDefault()
+    setIsSubmitting(true)
 
     try {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("role", formData.role);
-      formDataToSend.append("content", formData.content);
-      formDataToSend.append("rating", rating.toString());
+      const formDataToSend = new FormData()
+      formDataToSend.append("name", formData.name)
+      formDataToSend.append("role", formData.role)
+      formDataToSend.append("content", formData.content)
+      formDataToSend.append("rating", rating.toString())
       if (formData.image) {
-        formDataToSend.append("image", formData.image);
+        formDataToSend.append("image", formData.image)
       }
 
-      const result = await submitTestimonial(formDataToSend);
+      const result = await submitTestimonialAction(formDataToSend)
 
-      if (result.success) {
+      if (result) {
         toast({
           title: "Testimoni berhasil dikirim",
           description: "Terima kasih atas testimoni Anda. Testimoni akan ditampilkan setelah disetujui.",
           variant: "default",
-        });
+        })
 
         // Reset form
         setFormData({
@@ -69,24 +71,24 @@ export default function TestimonialForm() {
           role: "",
           content: "",
           image: null,
-        });
-        setRating(5);
-        setImagePreview(null);
-        setIsFormOpen(false);
+        })
+        setRating(5)
+        setImagePreview(null)
+        setIsFormOpen(false)
       } else {
-        throw new Error(result.error || "Terjadi kesalahan");
+        throw new Error("Terjadi kesalahan")
       }
     } catch (error) {
-      console.error("Error submitting testimonial:", error);
+      console.error("Error submitting testimonial:", error)
       toast({
         title: "Gagal mengirim testimoni",
         description: "Terjadi kesalahan saat mengirim testimoni. Silakan coba lagi.",
         variant: "destructive",
-      });
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   return (
     <>
@@ -160,7 +162,7 @@ export default function TestimonialForm() {
                     required
                     placeholder="Bagikan pengalaman Anda bersama Brick Property..."
                     rows={4}
-                    className="border-gray-300 focus:border-primary focus:ring-primary text-justify break-words"
+                    className="border-gray-300 focus:border-primary focus:ring-primary"
                   />
                 </div>
 
@@ -232,5 +234,6 @@ export default function TestimonialForm() {
         )}
       </AnimatePresence>
     </>
-  );
+  )
 }
+
